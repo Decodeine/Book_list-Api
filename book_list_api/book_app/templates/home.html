@@ -21,6 +21,15 @@ Book List
         color: purple;
     }
 </style>
+<script>
+    function toggleReviews(bookId) {
+        var reviews = document.getElementById('reviews-' + bookId).children;
+        for (var i = 1; i < reviews.length; i++) {
+            var display = reviews[i].style.display;
+            reviews[i].style.display = display === 'none' ? 'block' : 'none';
+        }
+    }
+</script>
 
 <!-- Filter form -->
 <form method="get">
@@ -49,7 +58,22 @@ Book List
             <p>Author: {{ book.author }}</p>
             <p>Publication Date: {{ book.publication_date }}</p>
             <p><a href="{{ book.download_link }}" class="download-link">Download</a></p>
-        </li>
+
+            <h3>Reviews:</h3>
+            <ul id="reviews-{{ book.id }}">
+                {% for review in book.reviews.all %}
+                    <li class="{% if forloop.first %}first{% else %}hidden{% endif %}">
+                        <p>Reviewer: {{ review.reviewer }}</p>
+                        <p>Review: {{ review.review }}</p>
+                        <p>Rating: {{ review.rating }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+            {% if book.reviews.count > 1 %}
+            <a href="{% url 'book_reviews' book.id %}" onclick="toggleReviews('{{ book.id }}'); return false;">Show more</a>
+
+            {% endif %}
+            </li>
     {% endfor %}
 </ul>
 {% endblock %}
