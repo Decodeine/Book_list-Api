@@ -26,7 +26,6 @@ Book List
 <form method="get">
     <input type="text" name="title" placeholder="Title">
     <input type="text" name="author" placeholder="Author">
-    <input type="date" name="publication_date" placeholder="Publication Date">
     <input type="submit" value="Filter">
 </form>
 
@@ -36,6 +35,8 @@ Book List
     <input type="text" name="title" placeholder="Title" required>
     <input type="text" name="author" placeholder="Author" required>
     <input type="date" name="publication_date" placeholder="Publication Date" required>
+    <input type="text" name="description" placeholder="description" required>
+    <input type="number" name="price" placeholder="price" step="0.01">
     <input type="submit" value="Create Book">
 </form>
 {% endif %}
@@ -43,7 +44,8 @@ Book List
 <ul>
     {% for book in books %}
         <li>
-            <h2>{{ book.title }}</h2>
+            <!-- Wrap the title in an anchor tag with a URL to the book detail view -->
+            <h2><a href="{% url 'singlebook' book.id %}">{{ book.title }}</a></h2>
             <p>Author: {{ book.author }}</p>
             <p>Publication Date: {{ book.publication_date }}</p>
             <p><a href="{{ book.download_link }}" class="download-link">Download</a></p>

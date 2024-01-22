@@ -10,20 +10,22 @@ Book Details
 
 {% block content %}
 <style>
-    a.download-link {
-        color: blue;
+    a.download-link, a.title-link {
+        color: black;
         text-decoration: none;
     }
-    a.download-link:hover {
+    a.download-link:hover, a.title-link:hover {
         color: red;
     }
-    a.download-link:visited {
+    a.download-link:visited, a.title-link:visited {
         color: purple;
     }
 </style>
 
-<h2>{{ book.title }}</h2>
+<h2><a href="{% url 'singlebook' book.id %}" class="title-link">{{ book.title }}</a></h2>
 <p>Author: {{ book.author }}</p>
+<p>Description: {{ book.description  }}</p>
+<p>Price: {{ book.price }}</p>
 <p>Publication Date: {{ book.publication_date }}</p>
 <p><a href="{{ book.download_link }}" class="download-link">Download</a></p>
 
