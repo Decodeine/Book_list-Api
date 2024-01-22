@@ -2,12 +2,17 @@ from .models import Book, Review
 from .serializers import BookSerializer, ReviewSerializer
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
+from django.shortcuts import render
 
 class BookListView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['title', 'author', 'publication_date']  # fields to search on
+    filterset_fields = ['title', 'author', 'publication_date']  
+
+def book_list_view(request):
+    books = Book.objects.all()
+    return render(request, 'home.html', {'books': books})
 
 class SingleBookView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()

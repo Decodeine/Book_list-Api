@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+Book List
+{% endblock %}
+
+{% block header %}
+Book List
+{% endblock %}
+
+{% block content %}
+<ul>
+    {% for book in books %}
+        <li>
+            <h2>{{ book.title }}</h2>
+            <p>Author: {{ book.author }}</p>
+            <p>Publication Date: {{ book.publication_date }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
