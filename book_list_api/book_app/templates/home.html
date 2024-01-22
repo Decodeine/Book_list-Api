@@ -9,12 +9,44 @@ Book List
 {% endblock %}
 
 {% block content %}
+<style>
+    a.download-link {
+        color: blue;
+        text-decoration: none;
+    }
+    a.download-link:hover {
+        color: red;
+    }
+    a.download-link:visited {
+        color: purple;
+    }
+</style>
+
+<!-- Filter form -->
+<form method="get">
+    <input type="text" name="title" placeholder="Title">
+    <input type="text" name="author" placeholder="Author">
+    <input type="date" name="publication_date" placeholder="Publication Date">
+    <input type="submit" value="Filter">
+</form>
+
+<!-- Create book form -->
+{% if request.user.is_staff %}
+<form method="post">
+    <input type="text" name="title" placeholder="Title" required>
+    <input type="text" name="author" placeholder="Author" required>
+    <input type="date" name="publication_date" placeholder="Publication Date" required>
+    <input type="submit" value="Create Book">
+</form>
+{% endif %}
+
 <ul>
     {% for book in books %}
         <li>
             <h2>{{ book.title }}</h2>
             <p>Author: {{ book.author }}</p>
             <p>Publication Date: {{ book.publication_date }}</p>
+            <p><a href="{{ book.download_link }}" class="download-link">Download</a></p>
         </li>
     {% endfor %}
 </ul>

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+Book Details
+{% endblock %}
+
+{% block header %}
+Book Details
+{% endblock %}
+
+{% block content %}
+<style>
+    a.download-link {
+        color: blue;
+        text-decoration: none;
+    }
+    a.download-link:hover {
+        color: red;
+    }
+    a.download-link:visited {
+        color: purple;
+    }
+</style>
+
+<h2>{{ book.title }}</h2>
+<p>Author: {{ book.author }}</p>
+<p>Publication Date: {{ book.publication_date }}</p>
+<p><a href="{{ book.download_link }}" class="download-link">Download</a></p>
+
+<!-- Update book form -->
+{% if request.user.is_staff %}
+<form method="post">
+    <input type="text" name="title" value="{{ book.title }}" required>
+    <input type="text" name="author" value="{{ book.author }}" required>
+    <input type="date" name="publication_date" value="{{ book.publication_date }}" required>
+    <input type="submit" value="Update Book">
+</form>
+{% endif %}
+
+{% endblock %}
