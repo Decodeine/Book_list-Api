@@ -2,9 +2,34 @@ from .models import Book, Review
 from .serializers import BookSerializer, ReviewSerializer
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
-from django.shortcuts import render
 from django.http import JsonResponse,HttpResponseForbidden
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
+from django.contrib import messages
+from django.contrib.auth import login
 
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'register.html', {'form': form})
 
 
 class BookListView(generics.ListCreateAPIView):
