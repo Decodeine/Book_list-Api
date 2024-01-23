@@ -1,10 +1,126 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>Register</h2>
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-  </form>
+    <div class="register-container">
+        <h2>Register</h2>
+        <form method="POST" class="register-form" onsubmit="return validatePassword()">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+        </form>
+        <div id="error-message" class="error-message">
+            Your password must meet the following requirements:
+            <ul>
+                <li>Your password must contain at least 8 characters.</li>
+                <li>Your password must contain at least one uppercase letter.</li>
+                <li>Your password must contain at least one lowercase letter.</li>
+                <li>Your password must contain at least one number.</li>
+                <li>Your password must contain at least one special character.</li>
+            </ul>
+        </div>
+    </div>
+
+    <style>
+        .register-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .error-message {
+            display: none;
+            color: red;
+            margin-top: 5px;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .register-form {
+            background-color: #f2f2f2;
+            margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        }
+
+        .register-form input[type="text"],
+        .register-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+                .register-container {
+                    max-width: 400px;
+                    width: 100%;
+                    padding: 20px;
+                    background-color: #fff;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }
+
+                h2 {
+                    color: #333;
+                    font-size: 24px;
+                    margin-bottom: 10px;
+                }
+
+                .register-form {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .register-form label {
+                    margin-bottom: 5px;
+                }
+
+                .register-form input[type="text"],
+                .register-form input[type="password"] {
+                    padding: 10px;
+                    margin-bottom: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-sizing: border-box;
+                }
+
+                .register-form button[type="submit"] {
+                    background-color: #007bff;
+                    color: #fff;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+
+                .error-message {
+                    display: none;
+                    color: red;
+                    margin-top: 5px;
+                }
+            
+    </style>
+
+    <script>
+        function validatePassword() {
+            var password = document.getElementById("id_password").value; // Use the actual ID of your password field
+            var errorMessage = document.getElementById("error-message");
+
+            // Check if the password meets the required format
+            var hasUpperCase = /[A-Z]/.test(password);
+            var hasLowerCase = /[a-z]/.test(password);
+            var hasNumber = /\d/.test(password);
+            var hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+            if (password.length < 8 || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+                errorMessage.style.display = "block";
+                return false; // Prevent form submission
+            } else {
+                errorMessage.style.display = "none";
+                return true; // Allow form submission if the password is valid
+            }
+        }
+    </script>
 {% endblock %}
